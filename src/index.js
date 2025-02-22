@@ -10,8 +10,8 @@
 
 import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
-import { createCard, deleteCard, likeCard } from "./components/card.js";
-import { closePopup, addClosePopupListener } from "./components/modal.js";
+import { createCard, deleteCard, likeCard, openImageCard } from "./components/card.js";
+import { closePopup, addClosePopupListeners } from "./components/modal.js";
 
 const container = document.querySelector(".content");
 const placesList = container.querySelector(".places__list");
@@ -33,7 +33,7 @@ editPopup.classList.add("popup_is-animated");
 newPopup.classList.add("popup_is-animated");
 imagePopup.classList.add("popup_is-animated");
 
-function handleFormSubmit(evt) {
+function handleFormEditProfile(evt) {
   evt.preventDefault();
 
   const newName = profileNameInput.value;
@@ -44,7 +44,7 @@ function handleFormSubmit(evt) {
 
   closePopup(editPopup);
 }
-formEditProfile.addEventListener("submit", handleFormSubmit);
+formEditProfile.addEventListener("submit", handleFormEditProfile);
 
 function handleFormNewCard(evt) {
     evt.preventDefault();
@@ -52,7 +52,7 @@ function handleFormNewCard(evt) {
         name: cardNameInput.value,
         link: urlInput.value
     };
-    const newCard = createCard(newCardObj, deleteCard, likeCard);
+    const newCard = createCard(newCardObj, deleteCard, likeCard, openImageCard);
     placesList.prepend(newCard);
     closePopup(newPopup);
     cardNameInput.value = '';
@@ -69,11 +69,11 @@ editButton.addEventListener("click", function () {
   editPopup.classList.add("popup_is-opened");
 });
 
-addClosePopupListener(newPopup);
-addClosePopupListener(editPopup);
-addClosePopupListener(imagePopup);
+addClosePopupListeners(newPopup);
+addClosePopupListeners(editPopup);
+addClosePopupListeners(imagePopup);
 
 initialCards.forEach((el) => {
-  const cardElement = createCard(el, deleteCard, likeCard);
+  const cardElement = createCard(el, deleteCard, likeCard, openImageCard);
   placesList.append(cardElement);
 });
