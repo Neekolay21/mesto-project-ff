@@ -27,6 +27,14 @@ const formNewPlace = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
 const urlInput = document.querySelector('.popup__input_type_url');
 
+editPopup.classList.add("popup_is-animated");
+newPopup.classList.add("popup_is-animated");
+imagePopup.classList.add("popup_is-animated");
+
+function likeCard (evt) {
+    evt.target.classList.add('card__like-button_is-active');
+};
+
 function handleFormSubmit(evt) {
   evt.preventDefault();
 
@@ -46,7 +54,7 @@ function handleFormNewCard(evt) {
         name: cardNameInput.value,
         link: urlInput.value
     };
-    const newCard = createCard(newCardObj, deleteCard);
+    const newCard = createCard(newCardObj, deleteCard, likeCard);
     placesList.prepend(newCard);
     closePopup(newPopup);
     cardNameInput.value = '';
@@ -90,17 +98,19 @@ addClosePopupListener(newPopup);
 addClosePopupListener(editPopup);
 addClosePopupListener(imagePopup);
 
-function createCard(el, deleteCard) {
+function createCard(el, deleteCard, likeCard) {
   const placeTemplate = document.querySelector("#card-template").content;
   const placeElement = placeTemplate.querySelector(".card").cloneNode(true);
   const deleteButton = placeElement.querySelector(".card__delete-button");
   const imageButton = placeElement.querySelector(".card__image");
+  const likeButton = placeElement.querySelector(".card__like-button");
 
   placeElement.querySelector(".card__image").src = el.link;
   placeElement.querySelector(".card__title").textContent = el.name;
   placeElement.querySelector(".card__image").alt = `Фотография места: ${el.name}`;
 
   deleteButton.addEventListener("click", deleteCard);
+  likeButton.addEventListener("click", likeCard);
   imageButton.addEventListener("click", function () {
     imagePopup.classList.add("popup_is-opened");
     imagePopup.querySelector(".popup__image").src = el.link;
@@ -111,7 +121,7 @@ function createCard(el, deleteCard) {
 }
 
 initialCards.forEach((el) => {
-  const cardElement = createCard(el, deleteCard);
+  const cardElement = createCard(el, deleteCard, likeCard);
   placesList.append(cardElement);
 });
 
