@@ -10,8 +10,8 @@
 
 import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
-import { createCard, deleteCard, likeCard, openImageCard } from "./components/card.js";
-import { closePopup, addClosePopupListeners } from "./components/modal.js";
+import { createCard, deleteCard, likeCard} from "./components/card.js";
+import { openPopup, closePopup, addClosePopupListeners } from "./components/modal.js";
 
 const container = document.querySelector(".content");
 const placesList = container.querySelector(".places__list");
@@ -60,13 +60,31 @@ function handleFormNewCard(evt) {
 }
 formNewPlace.addEventListener("submit", handleFormNewCard);
 
+function openImageCard(el) {
+  const card = el.target.closest('.card'); 
+
+  const imagePopup = document.querySelector(".popup_type_image");
+  const imageElement = imagePopup.querySelector(".popup__image");
+  const captionElement = imagePopup.querySelector(".popup__caption");
+
+  openPopup(imagePopup);
+
+  const imageSrc = card.querySelector('.card__image').src;
+  const imageAlt = card.querySelector('.card__title').textContent;
+  const imageCaption = card.querySelector('.card__title').textContent;
+
+  imageElement.src = imageSrc;
+  imageElement.alt = `Фотография места: ${imageAlt}`;
+  captionElement.textContent = imageCaption;
+}
+
 addButton.addEventListener("click", function () {
-  newPopup.classList.add("popup_is-opened");
+  openPopup(newPopup);
 });
 editButton.addEventListener("click", function () {
   editPopup.querySelector(".popup__input_type_name").value = profileName.textContent;
   editPopup.querySelector(".popup__input_type_description").value = profileJob.textContent;
-  editPopup.classList.add("popup_is-opened");
+  openPopup(editPopup);
 });
 
 addClosePopupListeners(newPopup);

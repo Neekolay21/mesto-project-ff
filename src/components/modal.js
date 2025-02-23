@@ -1,5 +1,18 @@
-function closePopup(popup) {
-  popup.classList.remove("popup_is-opened");
+function openPopup(popup) {
+    popup.classList.add("popup_is-opened");
+
+    const closeOnEscape = function(evt) {
+        if (evt.key === "Escape") {
+            closePopup(popup, closeOnEscape);
+        }
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+}
+
+function closePopup(popup, closeOnEscape) {
+    popup.classList.remove("popup_is-opened");
+    document.removeEventListener("keydown", closeOnEscape);
 }
 
 function addClosePopupListeners(popup) {
@@ -15,19 +28,7 @@ function addClosePopupListeners(popup) {
       closePopup(popup);
     });
   }
-
-  const closeOnEscape = function (evt) {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-    }
-  };
-
-  document.addEventListener("keydown", closeOnEscape);
-
-  return function removeEscapeListener() {
-    document.removeEventListener("keydown", closeOnEscape);
-  };
-}
+};
 
 
-export { closePopup, addClosePopupListeners };
+export { closePopup, addClosePopupListeners, openPopup};

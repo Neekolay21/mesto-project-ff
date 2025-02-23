@@ -25,22 +25,4 @@ function deleteCard(event) {
   eventTarget.remove();
 }
 
-function openImageCard(el) {
-    const card = el.target.closest('.card'); 
-
-    const imagePopup = document.querySelector(".popup_type_image");
-    const imageElement = imagePopup.querySelector(".popup__image");
-    const captionElement = imagePopup.querySelector(".popup__caption");
-
-    imagePopup.classList.add("popup_is-opened");
-
-    const imageSrc = card.querySelector('.card__image').src;
-    const imageAlt = card.querySelector('.card__title').textContent;
-    const imageCaption = card.querySelector('.card__title').textContent;
-
-    imageElement.src = imageSrc;
-    imageElement.alt = `Фотография места: ${imageAlt}`;
-    captionElement.textContent = imageCaption;
-}
-
-export { likeCard, createCard, deleteCard, openImageCard};
+export { likeCard, createCard, deleteCard};
