@@ -11,7 +11,7 @@
 import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
 import { createCard, deleteCard, likeCard} from "./components/card.js";
-import { openPopup, closePopup, addClosePopupListeners } from "./components/modal.js";
+import { openPopup, closePopup, addClosePopupListeners} from "./components/modal.js";
 
 const container = document.querySelector(".content");
 const placesList = container.querySelector(".places__list");
