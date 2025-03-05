@@ -5,8 +5,18 @@ const closeOnEscape = function(evt) {
 }
 
 function openPopup(popup) {
-    popup.classList.add("popup_is-opened");
-    document.addEventListener("keydown", closeOnEscape);
+  const regexProfile = /[\wа-я\sё-]\D/gi;
+  const nameValue = document.querySelector('.popup__input_type_name');
+  const descriptionValue = document.querySelector('.popup__input_type_description');  
+  
+  if (regexProfile.test(nameValue.value) && regexProfile.test(descriptionValue.value)) {
+    console.log('valid');
+  } else {
+    console.log('invalid');
+  }
+  
+  popup.classList.add("popup_is-opened");
+  document.addEventListener("keydown", closeOnEscape);
 }
 
 function closePopup(popup) {
