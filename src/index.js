@@ -28,6 +28,9 @@ const jobInput = document.querySelector(".popup__input_type_description");
 const formNewPlace = document.forms['new-place'];
 const cardNameInput = document.querySelector('.popup__input_type_card-name');
 const urlInput = document.querySelector('.popup__input_type_url');
+const formElement = document.querySelector('.popup__form');
+const formInputs = formElement.querySelectorAll('.popup__input');
+const regexProfile = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
 
 editPopup.classList.add("popup_is-animated");
 newPopup.classList.add("popup_is-animated");
@@ -95,3 +98,32 @@ initialCards.forEach((el) => {
   const cardElement = createCard(el, deleteCard, likeCard, openImageCard);
   placesList.append(cardElement);
 });
+
+function showInputError(element, errorMessage) {
+  const formError = formElement.querySelector(`.${element.id}-error`);
+  element.classList.add('popup__input_type_error');
+  formError.textContent = errorMessage;
+  formError.classList.add('popup__input-error_active')
+};
+
+function hideInputError(element) {
+  const formError = formElement.querySelector(`.${element.id}-error`);
+  element.classList.remove('popup__input_type_error');
+  formError.classList.remove('popup__input-error_active')
+  formError.textContent = '';
+};
+
+function isValid(event) {
+ const inputElement = event.target;
+  if (!inputElement.validity.valid) {
+  showInputError(inputElement, inputElement.validationMessage);
+ } else if (!regexProfile.test(inputElement.value)) {
+  showInputError(inputElement, "Допустимы только буквы, пробел и дефис!");
+ } else {
+  hideInputError(inputElement);
+ };
+}
+
+formInputs.forEach(input => {
+  input.addEventListener('input', isValid);
+}); 
