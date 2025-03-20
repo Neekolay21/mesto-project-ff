@@ -1,11 +1,10 @@
-import { event } from "jquery";
-import { deleteCardFromServer, likeCardOnServer, unlikeCardOnServer } from "./api.js"
+import {
+  deleteCardFromServer,
+  likeCardOnServer,
+  unlikeCardOnServer,
+} from "./api.js";
 
-function likeCard(event, cardId) {
-  const likeButton = event.target;
-  const cardElement = likeButton.closest(".card");
-  const likeCounter = cardElement.querySelector(".card__like-number");
-
+function likeCard(likeButton, likeCounter, cardId) {
   likeCardOnServer(cardId)
     .then((updatedCard) => {
       likeCounter.textContent = updatedCard.likes.length;
@@ -14,11 +13,7 @@ function likeCard(event, cardId) {
     .catch((err) => console.error("Ошибка при добавлении лайка:", err));
 }
 
-function unLikeCard(event, cardId) {
-  const likeButton = event.target;
-  const cardElement = likeButton.closest(".card");
-  const likeCounter = cardElement.querySelector(".card__like-number");
-
+function unLikeCard(likeButton, likeCounter, cardId) {
   unlikeCardOnServer(cardId)
     .then((updatedCard) => {
       likeCounter.textContent = updatedCard.likes.length;
@@ -27,7 +22,14 @@ function unLikeCard(event, cardId) {
     .catch((err) => console.error("Ошибка при удалении лайка:", err));
 }
 
-function createCard(el, deleteCard, likeCard, unLikeCard, openImageCard, myUserId) {
+function createCard(
+  el,
+  deleteCard,
+  likeCard,
+  unLikeCard,
+  openImageCard,
+  myUserId
+) {
   const placeTemplate = document.querySelector("#card-template").content;
   const placeElement = placeTemplate.querySelector(".card").cloneNode(true);
   const deleteButton = placeElement.querySelector(".card__delete-button");
@@ -37,7 +39,9 @@ function createCard(el, deleteCard, likeCard, unLikeCard, openImageCard, myUserI
 
   placeElement.querySelector(".card__image").src = el.link;
   placeElement.querySelector(".card__title").textContent = el.name;
-  placeElement.querySelector(".card__image").alt = `Фотография места: ${el.name}`;
+  placeElement.querySelector(
+    ".card__image"
+  ).alt = `Фотография места: ${el.name}`;
   likeCounter.textContent = el.likes.length;
 
   const isLikedByMe = el.likes.some((like) => like._id === myUserId);
@@ -48,14 +52,16 @@ function createCard(el, deleteCard, likeCard, unLikeCard, openImageCard, myUserI
   if (el.owner._id !== myUserId) {
     deleteButton.remove();
   } else {
-    deleteButton.addEventListener("click", (event) => deleteCard(event, el._id));
+    deleteButton.addEventListener("click", (event) =>
+      deleteCard(event, el._id)
+    );
   }
 
-  likeButton.addEventListener("click", (event) => {
+  likeButton.addEventListener("click", () => {
     if (likeButton.classList.contains("card__like-button_is-active")) {
-      unLikeCard(event, el._id);
+      unLikeCard(likeButton, likeCounter, el._id);
     } else {
-      likeCard(event, el._id);
+      likeCard(likeButton, likeCounter, el._id);
     }
   });
 
