@@ -59,6 +59,7 @@ const validationConfig = {
   inactiveButtonClass: "popup__button_inactive",
   inputErrorClass: "popup__input-error",
   errorClass: "popup__input-error_active",
+  inputErrorBottom: "popup__input_type_error",
 };
 
 editPopup.classList.add("popup_is-animated");

@@ -1,18 +1,23 @@
-function showInputError(formElement, inputElement, errorMessage) {
+function showInputError(
+  formElement,
+  inputElement,
+  errorMessage,
+  validationConfig
+) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add("popup__input_type_error");
+  inputElement.classList.add(validationConfig.inputErrorBottom);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add("popup__input-error_active");
+  errorElement.classList.add(validationConfig.errorClass);
 }
 
-function hideInputError(formElement, inputElement) {
+function hideInputError(formElement, inputElement, validationConfig) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove("popup__input_type_error");
-  errorElement.classList.remove("popup__input-error_active");
+  inputElement.classList.remove(validationConfig.inputErrorBottom);
+  errorElement.classList.remove(validationConfig.errorClass);
   errorElement.textContent = "";
 }
 
-function isValid(formElement, inputElement) {
+function isValid(formElement, inputElement, validationConfig) {
   const regexProfile = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
 
   if (inputElement.type === "url") {
@@ -28,9 +33,14 @@ function isValid(formElement, inputElement) {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage,
+      validationConfig
+    );
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, validationConfig);
   }
 }
 
@@ -63,7 +73,7 @@ function setEventListeners(formElement, validationConfig) {
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", () => {
-      isValid(formElement, inputElement);
+      isValid(formElement, inputElement, validationConfig);
 
       toggleButtonState(inputList, buttonElement, validationConfig);
     });
@@ -79,7 +89,7 @@ function clearValidation(formElement, validationConfig) {
   );
 
   inputList.forEach((inputElement) => {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, validationConfig);
     inputElement.setCustomValidity("");
   });
 
